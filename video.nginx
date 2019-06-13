@@ -1,0 +1,15 @@
+server {
+    listen 80;
+
+    location /static {
+        root /var/video;
+    }
+
+    location /media {
+        root /var/video;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+    }
+}
