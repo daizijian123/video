@@ -42,58 +42,6 @@ class Activity(models.Model):
 	create_time = models.DateTimeField(auto_now_add=True)
 	update_time = models.DateTimeField(auto_now=True)
 
-	@staticmethod
-	def add_activity(user_id, type_id, title, poster, start_time, end_time, address, people_num, details, logticket_id, logapplyform_id=None):
-		
-		logticket = LogTicket.objects.filter(id__in=logticket_id)
-		type = Type.objects.filter(id=type_id).first()
-		if logapplyform_id:
-			logapplyform = LogApplyForm.objects.filter(id=logapplyform_id).first()
-		user = User.objects.filter(id=user_id).first()
-
-		activity = Activity.objects.create(
-			user = user,
-			type = type,
-			title = title,
-			poster = poster,
-			start_time = start_time,
-			end_time = end_time,
-			address = address,
-			people_num = people_num,
-			details = details,
-			status = status
-		)
-
-		for i in logticket:
-			Ticket.objects.create(
-				activity = activity,
-				nickname = i.nickname,
-				price = i.price,
-				amount = i.amount,
-				audit = i.audit,
-				status = i.status,
-				explain = i.explain,
-				one_buy = i.one_buy,
-				less = i.less,
-				more = i.more,
-				order_start = i.order_start,
-				order_end = i.order_end,
-				valid_start = i.valid_start,
-				valid_end = i.valid_end
-			)
-
-		if logapplyform_id:
-			ApplyForm.objects.create(
-				activity = activity,
-				more = logapplyform
-			)
-		else:
-			ApplyForm.objects.create(
-				activity = activity
-			)
-
-		return '111'
-
 
 class Type(models.Model):
 	class Meta:
@@ -129,9 +77,6 @@ class Ticket(models.Model):
 	create_time = models.DateTimeField(auto_now_add=True)
 	update_time = models.DateTimeField(auto_now=True)
 
-	# @staticmethod
-	# def add_ticket(activity_id, ):
-	# 	pass
 
 
 class ApplyForm(models.Model):
@@ -167,29 +112,6 @@ class LogActivity(models.Model):
 	create_time = models.DateTimeField(auto_now_add=True)
 	update_time = models.DateTimeField(auto_now=True)
 
-	@staticmethod
-	def add_logactivity(user_id, type_id, title, poster, start_time, end_time, address, people_num, details):
-		''' 添加活动临时表 '''
-
-		user = User.objects.filter(id=user_id).first()
-
-		type = Type.objects.filter(id=type_id).first()
-
-		log_activity = LogActivity.objects.create(
-			user = user,
-			type = type,
-			title = title,
-			poster = poster,
-			start_time = start_time,
-			end_time = end_time,
-			address = address,
-			people_num = people_num,
-			details = details,
-			status = 0
-		)
-
-		return log_activity
-
 
 class LogTicket(models.Model):
 	class Meta:
@@ -215,39 +137,6 @@ class LogTicket(models.Model):
 	update_time = models.DateTimeField(auto_now=True)
 
 
-	@staticmethod
-	def add_logticket(activity_id, nickname, price, amount, audit, status, explain, one_buy, less, more, order_start, order_end, valid_start, valid_end):
-		
-		logactivity = LogActivity.objects.filter(id=activity_id).first()
-
-		logticket = LogTicket.objects.create(
-			activity = logactivity,
-			nickname = nickname,
-			price = price,
-			amount = amount,
-			audit = audit,
-			status = status,
-			explain = explain,
-			one_buy = one_buy,
-			less = less,
-			more = more,
-			order_start = order_start,
-			order_end = order_end,
-			valid_start = valid_start,
-			valid_end = valid_end,
-		)
-
-		return logticket
-
-
-	def del_logticket(logtid):
-		''' 删除临时表 '''
-
-		logticket = LogTicket.objects.filter(id=logtid).first().delete()
-
-		return logticket
-
-
 class LogApplyForm(models.Model):
 	class Meta:
 		 verbose_name = verbose_name_plural = '报名表单临时表'
@@ -255,16 +144,6 @@ class LogApplyForm(models.Model):
 
 	activity = models.ForeignKey('LogActivity', on_delete=models.CASCADE, verbose_name='活动')
 	more = models.TextField(verbose_name='更多项', default='')
-
-	@staticmethod
-	def logapply_more(activity, more):
-		
-		logapplyform = LogApplyForm.objects.create(
-			activity = activity,
-			more = more
-		)
-
-		return logapplyform
 
 
 class Apply(models.Model):
