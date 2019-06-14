@@ -3,7 +3,7 @@ git merge origin/master
 
 pip3 install -r requirements.txt
 
-cd backend
+cd video
 python3 manage.py migrate --settings=backend.settings_prod
 python3 manage.py collectstatic --no-input --settings=backend.settings_prod
 
