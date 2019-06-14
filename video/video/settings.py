@@ -108,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = './media/'
 
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Shanghai'

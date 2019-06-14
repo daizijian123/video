@@ -115,7 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-STATIC_ROOT = '/var/nusic/static'
+STATIC_ROOT = '/var/video/static/'
+MEDIA_ROOT = '/var/video/media/'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = './media/'
