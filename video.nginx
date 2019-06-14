@@ -1,5 +1,6 @@
 server {
-    listen 8108;
+    server_name video.metatype.cn;
+    listen 80;
 
     location /static {
         root /var/video;
