@@ -1,1 +1,3 @@
 django-restapi
+pymysql
+mysqlclient
