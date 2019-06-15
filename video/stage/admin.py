@@ -17,4 +17,7 @@ admin.site.register(Video)
 admin.site.register(Ups)
 admin.site.register(Comments)
 admin.site.register(TranSpond)
+admin.site.register(Order)
+admin.site.register(ReFund)
+
 

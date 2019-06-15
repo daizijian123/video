@@ -14,6 +14,8 @@ class User(models.Model):
 	sex = models.IntegerField(choices=[(0,'男'), (1,'女')], verbose_name='性别')
 	status = models.IntegerField(default=0, verbose_name='状态')
 	address = models.CharField(max_length=200, verbose_name='地址')
+	company = models.CharField(default='', max_length=200, verbose_name='所属单位')
+	introduce = models.TextField(default='', verbose_name='介绍')
 	real_name = models.CharField(null=True, blank=True,max_length=200, verbose_name='真实姓名')
 	iphone = models.CharField(null=True, blank=True, max_length=200, verbose_name='电话')
 	email = models.CharField(null=True, blank=True, max_length=200, verbose_name='邮箱')
@@ -21,6 +23,7 @@ class User(models.Model):
 	create_time = models.DateTimeField(auto_now_add=True)
 	update_time = models.DateTimeField(auto_now=True)
 
+	
 
 class Activity(models.Model):
 	class Meta:
@@ -181,6 +184,8 @@ class Video(models.Model):
 	update_time = models.DateTimeField(auto_now=True)
 
 
+
+
 class Ups(models.Model):
 	class Meta:
 		verbose_name = verbose_name_plural = '点赞'
@@ -223,23 +228,35 @@ class TranSpond(models.Model):
 	update_time = models.DateTimeField(auto_now=True)
 
 
-# class Order(models.Model):
-# 	class Meta:
-# 		verbose_name = verbose_name_plural = '订单'
-# 		db_table = 'order'
+class Order(models.Model):
+	class Meta:
+		verbose_name = verbose_name_plural = '订单'
+		db_table = 'order'
+
+	activity = models.ForeignKey('Activity', null=True, blank=True, on_delete=models.CASCADE, verbose_name='活动')
+	ticket = models.ForeignKey('Ticket',null=True, on_delete=models.CASCADE, verbose_name='票种')
+	user = models.ForeignKey('User', null=True, on_delete=models.CASCADE, verbose_name='用户')
+	order_num = models.CharField(max_length=200, verbose_name='订单号')
+	status = models.IntegerField(choices=[(0,'未支付'),(1,'已支付')])
+	order_money = models.FloatField(verbose_name='订单金额')
+	pay = models.IntegerField(verbose_name='支付方式')
+
+	create_time = models.DateTimeField(auto_now_add=True)
+	update_time = models.DateTimeField(auto_now=True)
 
 
-# 	activity = models.ForeignKey('Activity', null=True, blank=True, on_delete=models.CASCADE, verbose_name='活动')
-# 	ticket = models.ForeignKey('Ticket',null=True, on_delete=models.CASCADE, verbose_name='票种')
-# 	user = models.ForeignKey('User', null=True, on_delete=models.CASCADE, verbose_name='用户')
-# 	order_num = models.CharField(max_length=200, verbose_name='订单号')
-# 	order_money = models.FloatField(verbose_name='订单金额')
-# 	pay = models.IntegerField(verbose_name='支付方式')
+class ReFund(models.Model):
+	class Meta:
+		verbose_name = verbose_name_plural = '退款'
 
-# 	create_time = models.DateTimeField(auto_now_add=True)
-# 	update_time = models.DateTimeField(auto_now=True)
+	order = models.ForeignKey('Order', on_delete=models.CASCADE, verbose_name='订单')
+	transaction = models.CharField(max_length=200, verbose_name='退款交易号')
+	money = models.FloatField(verbose_name='退款金额')
+	status = models.IntegerField(choices=[(0,'退款中'),(1,'退款成功'),(2,'退款失败')],verbose_name='退款状态')
+	cause = models.TextField(verbose_name='退款原因')
 
-
+	create_time = models.DateTimeField(auto_now_add=True)
+	update_time = models.DateTimeField(auto_now=True)
 
 
 
