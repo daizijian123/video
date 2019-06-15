@@ -23,7 +23,7 @@ class User(models.Model):
 	create_time = models.DateTimeField(auto_now_add=True)
 	update_time = models.DateTimeField(auto_now=True)
 
-	
+
 
 class Activity(models.Model):
 	class Meta:
@@ -237,6 +237,7 @@ class Order(models.Model):
 	ticket = models.ForeignKey('Ticket',null=True, on_delete=models.CASCADE, verbose_name='票种')
 	user = models.ForeignKey('User', null=True, on_delete=models.CASCADE, verbose_name='用户')
 	order_num = models.CharField(max_length=200, verbose_name='订单号')
+	num = models.IntegerField(verbose_name='购买票数')
 	status = models.IntegerField(choices=[(0,'未支付'),(1,'已支付')])
 	order_money = models.FloatField(verbose_name='订单金额')
 	pay = models.IntegerField(verbose_name='支付方式')
